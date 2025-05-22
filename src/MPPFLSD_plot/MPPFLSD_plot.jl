@@ -1,6 +1,6 @@
 import ..Plots: plot, plot!, xlabel!, ylabel!, xlims!, ylims!
 
-function plot_shape(r, z; show::Bool=true)
+function plot_shape(r, z; show::Bool=true, label::String="")
         
     # PLOT_SHAPE Plots the shape profile in the (r, z) plane.
     #
@@ -8,8 +8,12 @@ function plot_shape(r, z; show::Bool=true)
     #   r       - Radial coordinates.
     #   z       - Axial coordinates.
    
-    plt = plot(r, z; markershape=:circle, aspect_ratio=1, label=:false, grid=false, xlim=[-0.01, 3], show=show)
-
+    #plt = plot(r, z; markershape=:circle, aspect_ratio=1, label=label, grid=false, xlim=[-0.01, r[end]], ylim=[minimum(z),maximum(z)], show=show)
+    plt = plot(r, z; markershape=:circle, label=label, grid=false, xlim=[-0.01, r[end]], ylim=[minimum(z),maximum(z)], show=show)
+    
+    xlabel!("r")
+    ylabel!("z")
+    
     return plt
 end
 

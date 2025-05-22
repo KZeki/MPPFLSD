@@ -10,7 +10,7 @@ end
 
 function diffmat(N::Int64, domain::AbstractArray, order::Int64)
     # swaping a and b so that, when the chebyshev points are calculated,
-    # the domain is ordered from from
+    # the domain is ordered from
     # small/left ((theta=pi)|>cos==-1) to large/right ((theta=0)|>cos==1)
     a = domain[2]
     b = domain[1]
@@ -41,7 +41,7 @@ diffmat(N::Int64) = diffmat(N, [-1, 1], 1)
 diffmat(N::Int64, order::Int64) = diffmat(N, [-1, 1], order)
 diffmat(N::Int64, domain::AbstractArray) = diffmat(N, domain, 1)
 
-function chebpts(N,domain::AbstractArray=[-1,1])
+function chebpts(N,domain::AbstractArray=[-1,1])::Vector{Float64}
     # domain is defined as [a,b], but assigning [b,a]
     # so that the points are returned/scaled from smallest to largest
     # could also have used reverse() when returning,
@@ -61,7 +61,7 @@ function chebpts(N,domain::AbstractArray=[-1,1])
     return x_chebpts_scaled
 end
         
-function clencurt(N::Int64) # clencurt
+function clencurt(N::Int64)::Vector{Float64} # clencurt
     #
     # Computes the integration weigths for pseudo-chebychev on domain [-1 1]
     #
@@ -83,10 +83,10 @@ function clencurt(N::Int64) # clencurt
     S=cos.(transpose(collect(nW[3:N])'.*collect(jW))*(pi/(N-1)));
     IW=bW.*( (2 .+(cW[3:N].*((1 .+(-1).^nW[3:N])./(1 .-nW[3:N].^2)))'*S) );
     
-    return IW
+    return vec(IW)
 end
 
-function introw(N::Int64,domain::AbstractArray=[-1,1])
+function introw(N::Int64,domain::AbstractArray=[-1,1])::Vector{Float64}
     L = domain[2] - domain[1]
     w=L/2*clencurt(N);
     return w

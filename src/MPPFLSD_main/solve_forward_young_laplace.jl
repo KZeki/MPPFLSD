@@ -38,7 +38,7 @@ function solve_forward_young_laplace(
     r = Interpolations.linear_interpolation(shape_guess.s, shape_guess.r, extrapolation_bc=Interpolations.Line())(vars_num.s0)
     z = Interpolations.linear_interpolation(shape_guess.s, shape_guess.z, extrapolation_bc=Interpolations.Line())(vars_num.s0)
 
-    psi = atan.(vars_num.D*z,vars_num.D*r);   # intial psi value 
+    psi = atan.(vars_num.D0*z,vars_num.D0*r);   # intial psi value 
     C = 1;                                # initial stretch parameter
     p0 = 2*params_phys.sigma/params_phys.rneedle;   # initial pressure
     u = ones(3*params_num.N+2,1);             # initial solution vector
@@ -46,21 +46,34 @@ function solve_forward_young_laplace(
     # store some variables for the iteration
     iter = 0;
     vars_sol = VarsSol();
-    vars_sol.r = r; vars_sol.z = z; vars_sol.psi = psi;
-    vars_sol.C = C; vars_sol.p0 = p0; 
-    
+    vars_sol.r = r;
+    vars_sol.z = z;
+    vars_sol.psi = psi;
+    vars_sol.C = C;
+    vars_sol.p0 = p0; 
+
+    rhs_version = :puff_exp
+    try
+        rhs_version = params_phys.puffParams[:puff_rhs_method]
+    catch
+        @warn("Dictionary `puffParams` (a field of the struct params_phys::ParamsPhys (argument of function `jacobian_rhs_simple`)) does not have a key `:puff_rhs_method` defined, default value `$rhs_version` is used`")
+    end
+
     # start the Newton-Raphson iteration
     while rms(u) > params_num.epsilon
     
         iter = iter + 1;
         
         if iter > params_num.nMaxIter
-            error("Iteration did not converge!")
+            #error("Newton-Raphson iteration of forward young-laplace did not converge in nMaxIter=$(params_num.nMaxIter) steps!")
+            @warn("Newton-Raphson iteration of forward young-laplace did not converge in nMaxIter=$(params_num.nMaxIter) steps!")
+            return vars_sol
         end    
     
         # build the Jacobian and RHS
-        A, b = jacobian_rhs_simple(params_phys,vars_sol,vars_num);
-        
+
+        A, b = jacobian_rhs_simple(params_phys,vars_sol,vars_num;rhs_version=rhs_version);
+
         # solve the system of equations
         u = A\b;
         
