@@ -82,13 +82,13 @@ function _puff_sigmoid(
     #pmax = 10
     #pmin = -0.002
     #A31 = -sigma*Diagonal(sin.(psi)./r.^2) .- Diagonal((a*r.*exp.(-r.^2/(2*b^2)))/b.^2);
-    A31 = Diagonal( (b*exp.(a.-b*r).*(pmax-pmin)) ./ ( exp.(a.-b*r) .+ 1 ).^2 .- sigma*sin.(psi)./r.^2 )
+    A31 = -Diagonal( (b*exp.(a.-b*r).*(pmax-pmin)) ./ ( exp.(a.-b*r) .+ 1 ).^2 .- sigma*sin.(psi)./r.^2 )
     A32 = g*rho*Diagonal(ones(N));
     A33 = C*sigma*D + sigma*Diagonal(cos.(psi)./r);
     A34 = sigma*(D*psi);
     A35 = -ones(N, 1);
 
-    b3 = p0 .- g*rho*z .- sigma*(C*D*psi .+ sin.(psi)./r) .- (-pmin .- (pmax-pmin)./(exp.(a .- b*r) .+ 1))
+    b3 = p0 .- g*rho*z .- sigma*(C*D*psi .+ sin.(psi)./r) .+ (pmin .+ (pmax-pmin)./(exp.(a .- b*r) .+ 1))
 
 
     # impose the needle radius as a BC (imposes the domain length)
