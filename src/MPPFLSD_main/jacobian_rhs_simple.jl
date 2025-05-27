@@ -73,16 +73,16 @@ function _puff_sigmoid(
     b2 = -(C*D*z-sin.(psi));
     
     # determine psi from Laplace law
-    a = params_phys.puffParams[:puff_sig_a];
-    b = params_phys.puffParams[:puff_sig_b];
+    a = params_phys.puffParams[:puff_sigmoid_a];
+    b = params_phys.puffParams[:puff_sigmoid_b];
     #a = -4.49
     #b = -10
-    pmin = params_phys.puffParams[:puff_sig_pmin];
-    pmax = params_phys.puffParams[:puff_sig_pmax];
+    pmin = params_phys.puffParams[:puff_sigmoid_pmin];
+    pmax = params_phys.puffParams[:puff_sigmoid_pmax];
     #pmax = 10
     #pmin = -0.002
     #A31 = -sigma*Diagonal(sin.(psi)./r.^2) .- Diagonal((a*r.*exp.(-r.^2/(2*b^2)))/b.^2);
-    A31 = -Diagonal( (b*exp.(a.-b*r).*(pmax-pmin)) ./ ( exp.(a.-b*r) .+ 1 ).^2 .- sigma*sin.(psi)./r.^2 )
+    A31 = -Diagonal( (b*exp.(a.-b*r).*(pmax-pmin)) ./ ( exp.(a.-b*r) .+ 1 ).^2 ) - Diagonal(sigma*sin.(psi)./r.^2 )
     A32 = g*rho*Diagonal(ones(N));
     A33 = C*sigma*D + sigma*Diagonal(cos.(psi)./r);
     A34 = sigma*(D*psi);
