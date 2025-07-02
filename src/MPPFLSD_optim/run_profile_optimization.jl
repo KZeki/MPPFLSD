@@ -11,8 +11,8 @@ function run_profile_optimization(
     lower_bounds::Vector{Float64} = initial_vec .- abs.(initial_vec*0.10),
     upper_bounds::Vector{Float64} = initial_vec .+ abs.(initial_vec*0.10),
     stable_rng::AbstractRNG = StableRNG(1),
-    N_random_initial::Int64 = 30,
-    N_samples_per_initial::Int64 = 30,
+    N_random_initial::Int64 = 3,
+    N_samples_per_initial::Int64 = 1,
     N_max_iter::Int64 = 1_000,
     default_ParamsPhys::ParamsPhys = ParamsPhys(;
             rneedle = 52e-3,
@@ -55,9 +55,11 @@ function run_profile_optimization(
     output_best_fit_z_profiles_simulation_matrix = fill([NaN],N_random_initial,N_samples_per_initial);
     
 
-    # Fill in the the columns of the intial parameters matrix with random starting parameters 
+    # Fill in the the columns of the intial parameters matrix with random starting parameters
+
+    random_vec = rand(stable_rng,Uniform(0,1),N_random_initial,length(initial_vec))
     for i in 1:length(initial_vec)
-        initial_params_matrix[:,i] = rand(stable_rng,Uniform(lower_bounds[i],upper_bounds[i]),N_random_initial)
+        initial_params_matrix[:,i] = abs(upper_bounds[i]-lower_bounds[i])*random_vec[:,i] .+ lower_bounds[i]
     end
     
     # Run simulation for every initial parameter set
@@ -108,9 +110,9 @@ function run_profile_optimization(
 
 
     return SimOutput(
-        initial_params_matrix = initial_params_matrix,
-        output_best_fit_params_simulation_matrix = output_best_fit_params_simulation_matrix,
-        output_best_fit_error_simulation_matrix = output_best_fit_error_simulation_matrix,
-        output_best_fit_r_profiles_simulation_matrix = output_best_fit_r_profiles_simulation_matrix,
-        output_best_fit_z_profiles_simulation_matrix = output_best_fit_z_profiles_simulation_matrix)
+        initial_params = initial_params_matrix,
+        output_best_fit_params = output_best_fit_params_simulation_matrix,
+        output_best_fit_error = output_best_fit_error_simulation_matrix,
+        output_best_fit_r_profiles = output_best_fit_r_profiles_simulation_matrix,
+        output_best_fit_z_profiles = output_best_fit_z_profiles_simulation_matrix)
 end

@@ -2,7 +2,7 @@ using ..MPPFLSD_structs: ParamsPhys, ParamsNum, SimOutput
 using ..MPPFLSD_util: interpolate_model, optim_params_to_ParamsPhys
 using ..MPPFLSD_main: gen_single_drop
 using ..Distributions: Uniform
-using ..Optim: Adam, Options, minimizer
+using ..Optim: Adam, optimize, Options, minimizer
 using ..StableRNGs: AbstractRNG, StableRNG
 
 

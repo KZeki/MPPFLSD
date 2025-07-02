@@ -6,7 +6,7 @@
 `z_sim` - z coordinates of simulation data\\
 `r_exp` - r coordinates of experimental data\\
 `z_exp` - z coordinates of experimental data\\
-`def_error_func` - Defaults `:H1`, Choose which error function to use, `:mean` for the mean absolute error, `:H1` for mean of squared error, `:H2` for mean of squared error divided by (1+r)\\
+`def_error_func` - Defaults `:H1`, Choose which error function to use, `:Hmean` for the mean absolute error, `:H1` for mean of squared error, `:H2` for mean of squared error divided by (1+r)\\
 `scale_sim` - Scale `r_sim` and `z_sim` by a scalar amount, for example to turn m into mm, so sim and exp data use the same unit\\
 `scale_exp` - Scale `r_exp` and `z_exp` by a scalar amount, for example to turn m into mm, so sim and exp data use the same unit\\
 `interpolate_on` - Default `:sim`, whether to linearly interpolate on `:sim` or `:exp` data before computing the error,
@@ -35,7 +35,7 @@ function compute_profile_error( r_sim::Vector{Float64},
         error("interp :$interpolate_on not found, try `:sim` or `:exp`")
     end 
 
-    if def_error_func == :mean
+    if def_error_func == :Hmean
         # Mean squared error
         error = sum(abs.(z_model_interp .- z_compare))/length(z_exp)
         return error
@@ -53,6 +53,6 @@ function compute_profile_error( r_sim::Vector{Float64},
 
         return error
     else
-        @error ("No def_error_func of `$(def_error_func)` found try `:mean`, `:H1`, `:H2`, `:H3`") 
+        @error ("No def_error_func of `$(def_error_func)` found try `:Hmean`, `:H1`, `:H2`, `:H3`") 
     end
 end
