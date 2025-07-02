@@ -88,11 +88,11 @@ end
 
 """
 # FieldNames
-`initial_params_matrix` # Initial params\\
-`output_best_fit_params_simulation_matrix` # Simulation output best fit param\\
-`output_best_fit_error_simulation_matrix` # Error function output per simulation\\
-`output_best_fit_r_profiles_simulation_matrix` # r profile per simulation\\
-`output_best_fit_z_profiles_simulation_matrix` # z profile per simulation\\
+`initial_params` # Initial params\\
+`output_best_fit_params` # Simulation output best fit param\\
+`output_best_fit_error` # Error function output per simulation\\
+`output_best_fit_r_profiles` # r profile per simulation\\
+`output_best_fit_z_profiles` # z profile per simulation\\
 """
 @kwdef mutable struct SimOutput
     initial_params::Matrix{Float64}
