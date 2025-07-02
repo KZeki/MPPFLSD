@@ -1,9 +1,11 @@
 """
 # optim\\_params\\_to\\_error\\_calc
+
 # Inputs:
 `optim_params_vec::Vector{Float64}` - Simple parameter vector passed to optim, example [43.47;-4.49;-729.56]\\
 `r_exp::Vector{Float64}` - Vector with r coordinates of experimental data\\
 `z_exp::Vector{Float64};` - Vector with rz coordinates of experimental data\\
+
 # Kwargs:
 `default_params_phys::ParamsPhys` - Pass the default ParamsPhys that should be used with the parameters\\
 `params_num::ParamsNum=ParamsNum(;N=40)` - Pass the ParamsNum, i.e., numeric parameters that should be used\\
