@@ -6,7 +6,7 @@ abstract type AbstractParams end
 `grav` # gravity (physical parameter)\\
 `rneedle` # Needle radius (physical parameter)\\
 `volume0` # Prescribed volume (physical parameter)\\
-`deltaRho` # Density difference (physical parameter)\\
+`deltaRho` # Density difference (rho\\_top-rho\\_bottom)(physical parameter)\\
 `worthingtonNumber` # Worthington number (needed for initial shape guess, physical parameter)\\
 `area0` # Area calculation\\
 """
@@ -83,4 +83,21 @@ end
     psi::Vector{Float64} = Float64[]
     #sigmas::Vector{Float64} = Float64[]
     #sigmap::Vector{Float64} = Float64[]
+end
+
+
+"""
+# FieldNames
+`initial_params_matrix` # Initial params\\
+`output_best_fit_params_simulation_matrix` # Simulation output best fit param\\
+`output_best_fit_error_simulation_matrix` # Error function output per simulation\\
+`output_best_fit_r_profiles_simulation_matrix` # r profile per simulation\\
+`output_best_fit_z_profiles_simulation_matrix` # z profile per simulation\\
+"""
+@kwdef mutable struct SimOutput
+    initial_params::Matrix{Float64}
+    output_best_fit_params::Matrix{Vector{Float64}}
+    output_best_fit_error::Matrix{Float64}
+    output_best_fit_r_profiles::Matrix{Vector{Float64}}
+    output_best_fit_z_profiles::Matrix{Vector{Float64}}
 end
