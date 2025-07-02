@@ -1,5 +1,5 @@
 """
-# compute_profile_error
+# compute\\_profile\\_error
 
 # Inputs:
 `r_sim` - r coordinates of simulation data\\
