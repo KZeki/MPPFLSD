@@ -102,7 +102,7 @@ function run_profile_optimization(
                 params_num = params_num,
                 def_error_func = use_error_func,
                 scale_sim = scale_sim,
-                scale_exp = scale_sim,
+                scale_exp = scale_exp,
                 interpolate_on = interpolate_on,
                 return_profiles = true)
         end
