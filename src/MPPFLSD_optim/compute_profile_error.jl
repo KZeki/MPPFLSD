@@ -26,11 +26,11 @@ function compute_profile_error( r_sim::Vector{Float64},
     if interpolate_on == :sim
         z_model_interp = interpolate_model(r_sim*scale_sim, z_sim*scale_sim, r_exp*scale_exp)
         z_compare = z_exp*scale_exp
-        r_compare = r_exp
+        r_compare = r_exp*scale_exp
     elseif interpolate_on == :exp
        z_model_interp = interpolate_model(r_exp*scale_exp, z_exp*scale_exp, r_sim*scale_sim)
        z_compare = z_sim*scale_sim
-       r_compare = r_sim
+       r_compare = r_sim*scale_sim
     else
         error("interp :$interpolate_on not found, try `:sim` or `:exp`")
     end 

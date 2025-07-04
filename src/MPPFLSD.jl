@@ -23,7 +23,7 @@ module MPPFLSD
     
     export ParamsPhys, ParamsNum
     export diffmat, chebpts, introw, clencurt
-    export fit_experiment_data
+    export fit_experiment_data, interpolate_model
     export gen_single_drop, calculate_volume_area, find_curvature
     export compute_profile_error, optim_params_to_error_calc, run_profile_optimization
     export plot_shape, plot_curvature
@@ -45,11 +45,11 @@ module MPPFLSD
 
     module MPPFLSD_util
         export rms, diffmat, chebpts, introw, clencurt
-        export fit_experiment_data
+        export fit_experiment_data, interpolate_model
         include(raw"MPPFLSD_util/MPPFLSD_util.jl")
     end
     import .MPPFLSD_util: diffmat, chebpts, introw, clencurt
-    import .MPPFLSD_util: fit_experiment_data
+    import .MPPFLSD_util: fit_experiment_data, interpolate_model
 
     module MPPFLSD_main
         export gen_single_drop, calculate_volume_area, find_curvature
