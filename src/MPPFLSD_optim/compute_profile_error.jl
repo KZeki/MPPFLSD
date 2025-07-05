@@ -24,32 +24,32 @@ function compute_profile_error( r_sim::Vector{Float64},
                                 scale_exp::Float64=1e0, 
                                 interpolate_on::Symbol=:sim)
     if interpolate_on == :sim
-        z_model_interp = interpolate_model(r_sim*scale_sim, z_sim*scale_sim, r_exp*scale_exp)
-        z_compare = z_exp*scale_exp
         r_compare = r_exp*scale_exp
+        z_model_interp = interpolate_model(r_sim*scale_sim, z_sim*scale_sim, r_compare)
+        z_compare = z_exp*scale_exp
     elseif interpolate_on == :exp
-       z_model_interp = interpolate_model(r_exp*scale_exp, z_exp*scale_exp, r_sim*scale_sim)
-       z_compare = z_sim*scale_sim
-       r_compare = r_sim*scale_sim
+        r_compare = r_sim*scale_sim
+        z_model_interp = interpolate_model(r_exp*scale_exp, z_exp*scale_exp, r_compare)
+        z_compare = z_sim*scale_sim
     else
-        error("interp :$interpolate_on not found, try `:sim` or `:exp`")
+        error("kwarg for interpolate_on = :$interpolate_on not found, try `:sim` or `:exp`")
     end 
 
     if def_error_func == :Hmean
         # Mean squared error
-        error = sum(abs.(z_model_interp .- z_compare))/length(z_exp)
+        error = sum(abs.(z_model_interp .- z_compare))/length(z_compare)
         return error
     elseif def_error_func == :H1
         # Mean squared error
-        error = sum((z_model_interp .- z_compare).^2)/length(z_exp)
+        error = sum((z_model_interp .- z_compare).^2)/length(z_compare)
         return error
     elseif def_error_func == :H2
         # Mean squared error with range scale
-        error = sum((z_model_interp .- z_compare).^2 ./(1 .+ r_compare))/length(z_exp)
+        error = sum((z_model_interp .- z_compare).^2 ./(1 .+ r_compare))/length(z_compare)
         return error
     elseif def_error_func == :H3
         # Mean squared error with quadratic range scale
-        error = sum((z_model_interp .- z_sim).^2 ./(1 .+ r_compare.^2))/length(z_exp)
+        error = sum((z_model_interp .- z_compare).^2 ./(1 .+ r_compare.^2))/length(z_compare)
 
         return error
     else
